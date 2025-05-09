@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone - Your Gaming Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-hover: #5b21b6;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --accent: #f59e0b;
+            --game-bg: #111827;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: var(--game-bg);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header {
+            background: var(--dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80") no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            width: 100%;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #d1d5db;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .featured-games, .games-page {
+            padding: 4rem 0;
+            transition: opacity 0.3s ease;
+            flex: 1;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--light);
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .section-title span {
+            color: var(--secondary);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .game-card {
+            background: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .game-info {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .game-category {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .game-description {
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: var(--dark);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+        
+        .no-results p {
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+        }
+        
+        footer {
+            background: var(--dark);
+            padding: 3rem 0;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #374151;
+            border-radius: 50%;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                background: var(--dark);
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 99;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .nav-links li {
+                margin: 1rem 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            max-width: 800px;
+            margin: 5% auto;
+            border-radius: 8px;
+            overflow: hidden;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .game-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .modal-game-img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .game-meta-item {
+            background: #374151;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .play-now {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .search-input {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            background: #374151;
+            color: white;
+            width: 200px;
+            transition: width 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            width: 250px;
+        }
+        
+        .loader {
+            border: 4px solid #374151;
+            border-top: 4px solid var(--secondary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .game-container {
+            display: none;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            max-width: 100vw;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            min-height: calc(100vh - 120px);
+        }
+        
+        .game-screen {
+            background: transparent;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            max-width: 1200px;
+        }
+        
+        .game-ui {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .back-to-games {
+            margin-top: 1rem;
+        }
+        
+        .game-iframe {
+            width: 100%;
+            height: calc(100vh - 200px);
+            min-height: 600px;
+            border: none;
+            background: #000;
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .music-control i {
+            font-size: 24px;
+            color: var(--light);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .games-page .games-grid {
+            margin-top: 2rem;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+
+        .game-title-display {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--light);
+            margin: 2rem 0;
+            font-size: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: text-shadow 0.3s;
+            user-select: none;
+            padding: 0 1rem;
+        }
+
+        .game-title-display.glow {
+            text-shadow: 0 0 10px var(--secondary), 
+                         0 0 20px var(--secondary),
+                         0 0 30px var(--secondary);
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: calc(100vh - 200px);
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* Music Player Styles */
+        .music-player-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        .music-player-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80%;
+            max-width: 400px;
+            background: var(--dark);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .music-player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .music-player-header h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--light);
+        }
+
+        .close-music-player {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .music-list {
+            list-style: none;
+        }
+
+        .music-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #374151;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .music-item:hover {
+            background: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .music-item.active {
+            background: var(--secondary);
+        }
+
+        .music-item i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .music-info {
+            flex: 1;
+        }
+
+        .music-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .music-author {
+            font-size: 0.8rem;
+            color: #d1d5db;
+        }
+
+        .now-playing {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #374151;
+            display: none;
+        }
+
+        .now-playing.active {
+            display: block;
+        }
+
+        .now-playing-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" id="homeLink">Game<span>Zone</span></a>
+                <div class="search-container">
+                    <input type="text" id="gameSearch" placeholder="Search games..." class="search-input">
+                    <div class="mobile-menu" id="mobileMenu">☰</div>
+                </div>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="games">Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="page active" id="homePage">
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Discover Amazing Online Games</h1>
+                        <p>Enjoy our collection of single-player games with challenging CPU opponents. Play for free and test your skills across various game types and difficulty levels.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="featured-games">
+                <div class="container">
+                    <h2 class="section-title">Featured <span>Games</span></h2>
+                    <div class="games-grid" id="gamesGrid">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="page" id="gamesPage">
+            <section class="games-page">
+                <div class="container">
+                    <h2 class="section-title">All <span>Games</span></h2>
+                    <div class="games-grid" id="allGamesGrid">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="game-container" id="gameContainer">
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About GameZone</h3>
+                    <p>GameZone is a premier platform for online gaming, offering a selection of single-player games with challenging CPU opponents.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link" data-page="home">Home</a></li>
+                        <li><a href="#" class="footer-link" data-page="games">Games</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 GameZone. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Game Title</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Control Button -->
+    <div class="music-control" id="musicControl" title="Music Player">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player-overlay" id="musicPlayerOverlay"></div>
+    <div class="music-player-container" id="musicPlayerContainer">
+        <div class="music-player-header">
+            <h2>Music Player</h2>
+            <button class="close-music-player" id="closeMusicPlayer">&times;</button>
+        </div>
+        <ul class="music-list" id="musicList">
+            <li class="music-item no-music">
+                <i class="fas fa-volume-mute"></i>
+                <div class="music-info">
+                    <div class="music-title">No Music</div>
+                    <div class="music-author">Silent Mode</div>
+                </div>
+            </li>
+            <li class="music-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+                <i class="fas fa-music"></i>
+                <div class="music-info">
+                    <div class="music-title">Epic Adventure</div>
+                    <div class="music-author">GameZone OST</div>
+                </div>
+            </li>
+            <li class="music-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">
+                <i class="fas fa-music"></i>
+                <div class="music-info">
+                    <div class="music-title">Pixel Dreams</div>
+                    <div class="music-author">GameZone OST</div>
+                </div>
+            </li>
+            <li class="music-item" data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">
+                <i class="fas fa-music"></i>
+                <div class="music-info">
+                    <div class="music-title">Retro Waves</div>
+                    <div class="music-author">GameZone OST</div>
+                </div>
+            </li>
+        </ul>
+        <div class="now-playing" id="nowPlaying">
+            <div class="now-playing-title">Now Playing: <span id="currentSongTitle">None</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const games = [
+            {
+                id: 1,
+                title: "Basketball Showdown",
+                category: "Sports",
+                description: "Challenge the CPU in an intense basketball shooting competition.",
+                fullDescription: "Test your shooting skills against a challenging AI opponent. First to score 10 points wins!",
+                image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=250&q=80",
+                rating: 4.9,
+                difficulty: "Medium",
+                releaseDate: "2024",
+                gameType: "iframe",
+                gameUrl: "https://hudsonwinter.github.io/BasketballShowdown/",
+                showRestart: true
+            },
+            {
+                id: 2,
+                title: "Space Race",
+                category: "Arcade",
+                description: "Race through space dodging asteroids in this fast-paced game.",
+                fullDescription: "Navigate your spaceship through an asteroid field in this exciting space race. Collect power-ups and avoid obstacles to set the best time.",
+                image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=250&q=80",
+                rating: 4.7,
+                difficulty: "Hard",
+                releaseDate: "2024",
+                gameType: "iframe",
+                gameUrl: "https://hudsonwinter.github.io/SpaceRace2/",
+                showRestart: false
+            },
+            {
+                id: 3,
+                title: "Snake Challenge",
+                category: "Arcade",
+                description: "Classic Snake game with increasing difficulty.",
+                fullDescription: "Guide your snake to collect food and grow longer. Avoid walls and your own tail! The game speeds up as you progress.",
+                image: "https://images.unsplash.com/photo-1573767291321-c0af2eaf5266?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=250&q=80",
+                rating: 4.5,
+                difficulty: "Easy to Hard",
+                releaseDate: "2023",
+                gameType: "iframe",
+                gameUrl: "https://hudsonwinter.github.io/SnakeGame/index.html",
+                showRestart: false
+            },
+            {
+                id: 4,
+                title: "Ball2Box",
+                category: "Physics",
+                description: "Bounce the ball into the target box in this physics-based challenge.",
+                fullDescription: "A fun physics game where you need to bounce the ball into the target box. Simple controls but challenging gameplay with realistic physics.",
+                image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=250&q=80",
+                rating: 4.3,
+                difficulty: "Medium",
+                releaseDate: "2024",
+                gameType: "iframe",
+                gameUrl: "https://hudsonwinter.github.io/Ball2Box/",
+                showRestart: true
+            },
+            {
+                id: 5,
+                title: "Memory Match",
+                category: "Puzzle",
+                description: "Test your memory with this classic matching game.",
+                fullDescription: "Flip cards to find matching pairs in this challenging memory game. Improve your concentration and memory skills!",
+                image: "https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=250&q=80",
+                rating: 4.6,
+                difficulty: "Medium",
+                releaseDate: "2024",
+                gameType: "iframe",
+                gameUrl: "https://hudsonwinter.github.io/Memory/",
+                showRestart: false
+            }
+        ];
+
+        // DOM Elements
+        const gamesGrid = document.getElementById('gamesGrid');
+        const allGamesGrid = document.getElementById('allGamesGrid');
+        const gameModal = document.getElementById('gameModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.getElementById('navLinks');
+        const gameSearch = document.getElementById('gameSearch');
+        const gameContainer = document.getElementById('gameContainer');
+        const musicControl = document.getElementById('musicControl');
+        const homeLink = document.getElementById('homeLink');
+        const homePage = document.getElementById('homePage');
+        const gamesPage = document.getElementById('gamesPage');
+        const pages = document.querySelectorAll('.page');
+        const featuredGamesSection = document.querySelector('.featured-games');
+        const navLinksList = document.querySelectorAll('.nav-link');
+        const footerLinks = document.querySelectorAll('.footer-link');
+        const musicPlayerOverlay = document.getElementById('musicPlayerOverlay');
+        const musicPlayerContainer = document.getElementById('musicPlayerContainer');
+        const closeMusicPlayer = document.getElementById('closeMusicPlayer');
+        const musicList = document.getElementById('musicList');
+        const nowPlaying = document.getElementById('nowPlaying');
+        const currentSongTitle = document.getElementById('currentSongTitle');
+
+        // State variables
+        let currentGameSounds = [];
+        let currentGameIframe = null;
+        let currentGame = null;
+        let backgroundMusic = null;
+        let currentMusicItem = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                displayGames(games, gamesGrid);
+                displayGames(games, allGamesGrid);
+            }, 1000);
+            
+            setupEventListeners();
+            showPage('home');
+            
+            // Start with no music by default
+            const noMusicItem = musicList.querySelector('.no-music');
+            if (noMusicItem) {
+                playBackgroundMusic(noMusicItem);
+            }
+        });
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Game modal
+            closeModal.addEventListener('click', closeGameModal);
+            gameModal.addEventListener('click', (e) => {
+                if (e.target === gameModal) {
+                    closeGameModal();
+                }
+            });
+
+            // Mobile menu
+            mobileMenu.addEventListener('click', toggleMobileMenu);
+
+            // Game search
+            gameSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredGames = games.filter(game => 
+                    game.title.toLowerCase().includes(searchTerm) || 
+                    game.category.toLowerCase().includes(searchTerm)
+                );
+                displayGames(filteredGames, gamesGrid);
+                displayGames(filteredGames, allGamesGrid);
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeGameModal();
+                    closeMusicPlayerModal();
+                }
+            });
+
+            // Navigation links
+            navLinksList.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    showPage(page);
+                    toggleMobileMenu();
+                });
+            });
+
+            // Footer links
+            footerLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    showPage(page);
+                });
+            });
+
+            // Home link
+            homeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('home');
+            });
+
+            // Prevent arrow key scrolling in games
+            document.addEventListener('keydown', (e) => {
+                if (gameContainer.style.display === 'block' && 
+                    ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+                    e.preventDefault();
+                }
+            }, false);
+
+            // Music control
+            musicControl.addEventListener('click', toggleMusicPlayer);
+            
+            // Music player controls
+            closeMusicPlayer.addEventListener('click', closeMusicPlayerModal);
+            musicPlayerOverlay.addEventListener('click', closeMusicPlayerModal);
+
+            // Music list items
+            const musicItems = musicList.querySelectorAll('.music-item');
+            musicItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    playBackgroundMusic(item);
+                });
+                
+                // Preview on hover (except for no music option)
+                if (!item.classList.contains('no-music')) {
+                    item.addEventListener('mouseenter', () => {
+                        if (backgroundMusic && !backgroundMusic.paused) return;
+                        
+                        const src = item.getAttribute('data-src');
+                        const previewAudio = new Audio(src);
+                        previewAudio.volume = 0.3;
+                        previewAudio.play();
+                        
+                        item.addEventListener('mouseleave', () => {
+                            previewAudio.pause();
+                        }, { once: true });
+                    });
+                }
+            });
+        }
+
+        // Toggle music player visibility
+        function toggleMusicPlayer() {
+            musicPlayerOverlay.style.display = 'block';
+            musicPlayerContainer.style.display = 'block';
+            
+            setTimeout(() => {
+                musicPlayerOverlay.style.opacity = '1';
+                musicPlayerContainer.style.opacity = '1';
+                musicPlayerContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+        }
+
+        // Close music player
+        function closeMusicPlayerModal() {
+            musicPlayerOverlay.style.opacity = '0';
+            musicPlayerContainer.style.opacity = '0';
+            musicPlayerContainer.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            
+            setTimeout(() => {
+                musicPlayerOverlay.style.display = 'none';
+                musicPlayerContainer.style.display = 'none';
+            }, 300);
+        }
+
+        // Play background music or disable it
+        function playBackgroundMusic(musicItem) {
+            // If clicking "No Music" option
+            if (musicItem.classList.contains('no-music')) {
+                if (backgroundMusic) {
+                    backgroundMusic.pause();
+                    backgroundMusic.currentTime = 0;
+                    backgroundMusic = null;
+                }
+                
+                // Update active item styling
+                if (currentMusicItem) {
+                    currentMusicItem.classList.remove('active');
+                }
+                musicItem.classList.add('active');
+                currentMusicItem = musicItem;
+                
+                // Update now playing info
+                currentSongTitle.textContent = "None";
+                nowPlaying.classList.add('active');
+                return;
+            }
+            
+            const src = musicItem.getAttribute('data-src');
+            const title = musicItem.querySelector('.music-title').textContent;
+            
+            // Stop current music if playing
+            if (backgroundMusic) {
+                backgroundMusic.pause();
+                backgroundMusic.currentTime = 0;
+            }
+            
+            // Update active item styling
+            if (currentMusicItem) {
+                currentMusicItem.classList.remove('active');
+            }
+            musicItem.classList.add('active');
+            currentMusicItem = musicItem;
+            
+            // Play new music
+            backgroundMusic = new Audio(src);
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.5;
+            
+            backgroundMusic.play().catch(e => {
+                console.log("Music playback prevented:", e);
+            });
+            
+            // Update now playing info
+            currentSongTitle.textContent = title;
+            nowPlaying.classList.add('active');
+        }
+
+        // Stop all game sounds
+        function stopAllGameSounds() {
+            currentGameSounds.forEach(sound => {
+                sound.pause();
+                sound.currentTime = 0;
+            });
+            currentGameSounds = [];
+            
+            if (currentGameIframe) {
+                try {
+                    const iframeDoc = currentGameIframe.contentDocument || currentGameIframe.contentWindow.document;
+                    const iframeSounds = iframeDoc.querySelectorAll('audio, video');
+                    iframeSounds.forEach(sound => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    });
+                } catch (e) {
+                    console.log("Could not access iframe sounds due to cross-origin policy");
+                }
+                currentGameIframe = null;
+            }
+        }
+
+        // Play a sound effect
+        function playSound(src, volume = 1.0) {
+            const sound = new Audio(src);
+            sound.volume = volume;
+            sound.play().catch(e => console.log("Sound playback prevented:", e));
+            currentGameSounds.push(sound);
+            return sound;
+        }
+
+        // Show a specific page
+        function showPage(pageName) {
+            pages.forEach(page => {
+                page.style.display = 'none';
+                page.classList.remove('active');
+            });
+            
+            switch(pageName) {
+                case 'home':
+                    homePage.style.display = 'block';
+                    homePage.classList.add('active');
+                    featuredGamesSection.style.display = 'block';
+                    setTimeout(() => {
+                        featuredGamesSection.style.opacity = 1;
+                    }, 50);
+                    break;
+                case 'games':
+                    gamesPage.style.display = 'block';
+                    gamesPage.classList.add('active');
+                    break;
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Display games in the grid
+        function displayGames(gamesToDisplay, gridElement = gamesGrid) {
+            if (gamesToDisplay.length === 0) {
+                gridElement.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>No Games Found</h3>
+                        <p>We couldn't find any games matching your search. Try a different term.</p>
+                        <button class="btn" id="clearSearch">Clear Search</button>
+                    </div>
+                `;
+                
+                const clearSearchBtn = document.getElementById('clearSearch');
+                if (clearSearchBtn) {
+                    clearSearchBtn.addEventListener('click', () => {
+                        gameSearch.value = '';
+                        displayGames(games, gridElement);
+                    });
+                }
+                return;
+            }
+            
+            gridElement.innerHTML = '';
+            
+            gamesToDisplay.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.classList.add('game-card', 'fade-in');
+                gameCard.innerHTML = `
+                    <img src="${game.image}" alt="${game.title}" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <div class="game-category">${game.category}</div>
+                        <p class="game-description">${game.description}</p>
+                        <button class="btn" data-id="${game.id}">Play Now</button>
+                    </div>
+                `;
+                gridElement.appendChild(gameCard);
+                
+                const playButton = gameCard.querySelector('.btn');
+                playButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openGameModal(game.id);
+                });
+            });
+        }
+
+        // Open game modal
+        function openGameModal(gameId) {
+            const game = games.find(g => g.id === gameId);
+            
+            if (game) {
+                modalTitle.textContent = game.title;
+                modalBody.innerHTML = `
+                    <div class="game-details">
+                        <div>
+                            <img src="${game.image}" alt="${game.title}" class="modal-game-img">
+                            <div class="game-meta">
+                                <span class="game-meta-item">⭐ ${game.rating}</span>
+                                <span class="game-meta-item">🎮 ${game.difficulty}</span>
+                                <span class="game-meta-item">🗓️ ${game.releaseDate}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Description</h3>
+                            <p>${game.fullDescription}</p>
+                            <h3>Category</h3>
+                            <p>${game.category}</p>
+                            <button class="btn play-now" data-id="${game.id}">Play Now</button>
+                        </div>
+                    </div>
+                `;
+                
+                gameModal.style.display = 'block';
+                setTimeout(() => {
+                    document.querySelector('.modal-content').style.transform = 'translateY(0)';
+                    document.querySelector('.modal-content').style.opacity = 1;
+                }, 10);
+                
+                const modalPlayButton = modalBody.querySelector('.play-now');
+                modalPlayButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeGameModal();
+                    launchGame(game.id);
+                });
+            }
+        }
+
+        // Close game modal
+        function closeGameModal() {
+            document.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+            document.querySelector('.modal-content').style.opacity = 0;
+            setTimeout(() => {
+                gameModal.style.display = 'none';
+            }, 300);
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            navLinks.classList.toggle('active');
+        }
+
+        // Launch a game
+        function launchGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            currentGame = game;
+            pages.forEach(page => page.style.display = 'none');
+            featuredGamesSection.style.opacity = 0;
+            
+            gameContainer.style.display = 'block';
+            setTimeout(() => {
+                gameContainer.style.opacity = 1;
+                setupGame(game);
+            }, 50);
+        }
+
+        // Exit game and return to main view
+        function exitGame() {
+            stopAllGameSounds();
+            
+            gameContainer.style.opacity = 0;
+            setTimeout(() => {
+                gameContainer.style.display = 'none';
+                gameContainer.innerHTML = '';
+                showPage('home');
+            }, 300);
+        }
+
+        // Set up game container
+        function setupGame(game) {
+            stopAllGameSounds();
+            
+            gameContainer.innerHTML = `
+                <div class="loader" id="gameLoader"></div>
+                <div id="gameContent" style="opacity:0"></div>
+            `;
+            
+            setTimeout(() => {
+                const content = document.getElementById('gameContent');
+                
+                if (game.gameType === 'iframe') {
+                    setupIframeGame(game);
+                }
+                
+                content.style.opacity = 1;
+                document.getElementById('gameLoader').remove();
+                gameContainer.scrollTo(0, 0);
+            }, 500);
+        }
+
+        // Set up iframe game
+        function setupIframeGame(game) {
+            gameContainer.innerHTML = `
+                <div class="game-screen">
+                    <h2 class="game-title-display">${game.title}</h2>
+                    <div class="iframe-container">
+                        <iframe src="${game.gameUrl}" 
+                                class="game-iframe" 
+                                allowfullscreen
+                                loading="eager"
+                                id="gameIframe">
+                        </iframe>
+                    </div>
+                    <div class="game-controls">
+                        <button class="btn back-to-games" id="backToGames">Back to Games</button>
+                        ${game.showRestart ? '<button class="btn restart-game" id="restartGame">Restart Game</button>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            currentGameIframe = document.getElementById('gameIframe');
+            
+            const backButton = document.getElementById('backToGames');
+            backButton.addEventListener('click', exitGame);
+            
+            const restartButton = document.getElementById('restartGame');
+            if (restartButton) {
+                restartButton.addEventListener('click', () => {
+                    currentGameIframe.src = game.gameUrl;
+                });
+            }
+
+            const titleElement = document.querySelector('.game-title-display');
+            titleElement.addEventListener('click', () => {
+                titleElement.classList.toggle('glow');
+            });
+        }
+    </script>
+</body>
+</html>
