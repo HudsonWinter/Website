@@ -586,6 +586,7 @@
             z-index: 999;
             transition: opacity 0.3s;
             opacity: 0;
+            pointer-events: none;
         }
 
         .music-player-container {
@@ -604,6 +605,7 @@
             overflow-y: auto;
             transition: all 0.3s;
             opacity: 0;
+            pointer-events: none;
         }
 
         .music-player-header {
@@ -811,14 +813,7 @@
                 <i class="fas fa-music"></i>
                 <div class="music-info">
                     <div class="music-title">Pixel Dreams</div>
-                    <div class="music-author">\</div>
-                </div>
-            </li>
-            <li class="music-item" data-src="">
-                <i class="fas fa-music"></i>
-                <div class="music-info">
-                    <div class="music-title">Retro Waves</div>
-                    <div class="music-author">\</div>
+                    <div class="music-author"></div>
                 </div>
             </li>
         </ul>
@@ -1030,22 +1025,6 @@
                 item.addEventListener('click', () => {
                     playBackgroundMusic(item);
                 });
-                
-                // Preview on hover (except for no music option)
-                if (!item.classList.contains('no-music')) {
-                    item.addEventListener('mouseenter', () => {
-                        if (backgroundMusic && !backgroundMusic.paused) return;
-                        
-                        const src = item.getAttribute('data-src');
-                        const previewAudio = new Audio(src);
-                        previewAudio.volume = 0.3;
-                        previewAudio.play();
-                        
-                        item.addEventListener('mouseleave', () => {
-                            previewAudio.pause();
-                        }, { once: true });
-                    });
-                }
             });
         }
 
@@ -1058,6 +1037,8 @@
                 musicPlayerOverlay.style.opacity = '1';
                 musicPlayerContainer.style.opacity = '1';
                 musicPlayerContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+                musicPlayerOverlay.style.pointerEvents = 'auto';
+                musicPlayerContainer.style.pointerEvents = 'auto';
             }, 10);
         }
 
@@ -1066,6 +1047,8 @@
             musicPlayerOverlay.style.opacity = '0';
             musicPlayerContainer.style.opacity = '0';
             musicPlayerContainer.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            musicPlayerOverlay.style.pointerEvents = 'none';
+            musicPlayerContainer.style.pointerEvents = 'none';
             
             setTimeout(() => {
                 musicPlayerOverlay.style.display = 'none';
