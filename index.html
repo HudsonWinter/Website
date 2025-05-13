@@ -935,7 +935,7 @@
         </div>
     </div>
 
-   <script>
+  <script>
     // Game data with progress saving capability
     const games = [
         {
@@ -1188,13 +1188,6 @@
                 }
             });
         });
-
-        // Focus management for accessibility
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                handleFocusManagement(e);
-            }
-        });
     }
 
     // Trap focus in modal for accessibility
@@ -1216,11 +1209,6 @@
                 }
             }
         }
-    }
-
-    // Handle focus management for keyboard users
-    function handleFocusManagement(e) {
-        // Implement focus trapping if needed
     }
 
     // Sanitize input to prevent XSS
@@ -1352,7 +1340,7 @@
         return sound;
     }
 
-    // Show a specific page and handle game exit/search clearing
+    // Show a specific page
     function showPage(pageName) {
         // Exit game if currently playing
         if (gameContainer.style.display === 'block') {
@@ -1379,26 +1367,11 @@
                 setTimeout(() => {
                     featuredGamesSection.style.opacity = 1;
                 }, 50);
-                
-                // Focus first element for screen readers
-                setTimeout(() => {
-                    const firstFocusable = document.querySelector('header a, header button');
-                    if (firstFocusable) {
-                        firstFocusable.focus();
-                    }
-                }, 100);
                 break;
             case 'games':
                 gamesPage.style.display = 'block';
                 gamesPage.classList.add('active');
-                
-                // Focus first element for screen readers
-                setTimeout(() => {
-                    const firstFocusable = document.querySelector('header a, header button');
-                    if (firstFocusable) {
-                        firstFocusable.focus();
-                    }
-                }, 100);
+                featuredGamesSection.style.display = 'none';
                 break;
         }
         
@@ -1553,7 +1526,6 @@
     }
 
     // Exit game and return to main view
-   // Exit game and return to games library
     function exitGame() {
         stopAllGameSounds();
         
@@ -1566,22 +1538,25 @@
         setTimeout(() => {
             gameContainer.style.display = 'none';
             gameContainer.innerHTML = '';
-            
-            // Properly show the games page
-            pages.forEach(page => page.style.display = 'none');
-            gamesPage.style.display = 'block';
-            gamesPage.classList.add('active');
-            featuredGamesSection.style.display = 'none';
-            
-            // Reset scroll position
-            window.scrollTo(0, 0);
-            
-            // Focus on header for accessibility
-            const firstFocusable = document.querySelector('header a, header button');
-            if (firstFocusable) {
-                firstFocusable.focus();
-            }
         }, 300);
+    }
+
+    // Save game progress to localStorage
+    function saveGameProgress(gameId) {
+        const game = games.find(g => g.id === gameId);
+        if (!game || !game.saveProgress) return;
+        
+        try {
+            // In a real implementation, you would get the actual progress from the game
+            const progress = {
+                lastPlayed: new Date().toISOString(),
+                // Add other progress data here
+            };
+            
+            localStorage.setItem(game.progressKey, JSON.stringify(progress));
+        } catch (e) {
+            console.error("Failed to save game progress:", e);
+        }
     }
 
     // Load game progress from localStorage
@@ -1654,7 +1629,9 @@
         currentGameIframe = document.getElementById('gameIframe');
         
         const backButton = document.getElementById('backToGames');
-        backButton.addEventListener('click', exitGame);
+        backButton.addEventListener('click', () => {
+            showPage('games');
+        });
         
         const restartButton = document.getElementById('restartGame');
         if (restartButton) {
@@ -1672,7 +1649,7 @@
         backButton.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                exitGame();
+                showPage('games');
             }
         });
         
