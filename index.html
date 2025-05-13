@@ -1553,24 +1553,35 @@
     }
 
     // Exit game and return to main view
-    function exitGame
-
-    // Save game progress to localStorage
-    function saveGameProgress(gameId) {
-        const game = games.find(g => g.id === gameId);
-        if (!game || !game.saveProgress) return;
+   // Exit game and return to games library
+    function exitGame() {
+        stopAllGameSounds();
         
-        try {
-            // In a real implementation, you would get the actual progress from the game
-            const progress = {
-                lastPlayed: new Date().toISOString(),
-                // Add other progress data here
-            };
-            
-            localStorage.setItem(game.progressKey, JSON.stringify(progress));
-        } catch (e) {
-            console.error("Failed to save game progress:", e);
+        // Save game progress if applicable
+        if (currentGame && currentGame.saveProgress) {
+            saveGameProgress(currentGame.id);
         }
+        
+        gameContainer.style.opacity = 0;
+        setTimeout(() => {
+            gameContainer.style.display = 'none';
+            gameContainer.innerHTML = '';
+            
+            // Properly show the games page
+            pages.forEach(page => page.style.display = 'none');
+            gamesPage.style.display = 'block';
+            gamesPage.classList.add('active');
+            featuredGamesSection.style.display = 'none';
+            
+            // Reset scroll position
+            window.scrollTo(0, 0);
+            
+            // Focus on header for accessibility
+            const firstFocusable = document.querySelector('header a, header button');
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+        }, 300);
     }
 
     // Load game progress from localStorage
