@@ -6,7 +6,7 @@
     <title>Ultimate Gaming Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <style>
+<style>
     :root {
         --primary: #6d28d9;
         --primary-hover: #5b21b6;
@@ -547,10 +547,27 @@
         margin-top: 1rem;
     }
     
-    .game-iframe {
+    /* Standard iframe container */
+    .iframe-container {
         width: 100%;
         height: calc(100vh - 200px);
         min-height: 600px;
+        position: relative;
+    }
+    
+    /* 4:3 aspect ratio for specific games */
+    .ratio-4by3 {
+        aspect-ratio: 4/3;
+        width: 80%;
+        max-width: 800px;
+        height: auto;
+        margin: 0 auto;
+        min-height: 0;
+    }
+    
+    .game-iframe {
+        width: 100%;
+        height: 100%;
         border: none;
         background: #000;
     }
@@ -624,13 +641,6 @@
         justify-content: center;
         gap: 1rem;
         margin-top: 1rem;
-    }
-
-    .iframe-container {
-        width: 100%;
-        height: calc(100vh - 200px);
-        min-height: 600px;
-        position: relative;
     }
 
     /* Music Player Styles */
@@ -935,8 +945,8 @@
         </div>
     </div>
 
-  <script>
-    // Game data with progress saving capability
+<script>
+    // Game data with aspect ratio settings
     const games = [
         {
             id: 1,
@@ -952,7 +962,8 @@
             gameUrl: "https://hudsonwinter.github.io/BasketballShowdown/",
             showRestart: true,
             saveProgress: true,
-            progressKey: "basketball_progress"
+            progressKey: "basketball_progress",
+            aspectRatio: "standard"
         },
         {
             id: 2,
@@ -967,7 +978,8 @@
             gameType: "iframe",
             gameUrl: "https://hudsonwinter.github.io/SpaceRace2/",
             showRestart: false,
-            saveProgress: false
+            saveProgress: false,
+            aspectRatio: "4by3"
         },
         {
             id: 3,
@@ -983,7 +995,8 @@
             gameUrl: "https://hudsonwinter.github.io/SnakeGame/index.html",
             showRestart: false,
             saveProgress: true,
-            progressKey: "snake_progress"
+            progressKey: "snake_progress",
+            aspectRatio: "standard"
         },
         {
             id: 4,
@@ -999,7 +1012,8 @@
             gameUrl: "https://hudsonwinter.github.io/Ball2Box/",
             showRestart: true,
             saveProgress: true,
-            progressKey: "ball2box_progress"
+            progressKey: "ball2box_progress",
+            aspectRatio: "4by3"
         },
         {
             id: 5,
@@ -1015,7 +1029,8 @@
             gameUrl: "https://hudsonwinter.github.io/Memory/",
             showRestart: false,
             saveProgress: true,
-            progressKey: "memory_progress"
+            progressKey: "memory_progress",
+            aspectRatio: "4by3"
         }
     ];
 
@@ -1076,13 +1091,11 @@
     // Handle visibility change (tab switching)
     function handleVisibilityChange() {
         if (document.hidden) {
-            // Tab is not visible, pause music
             if (backgroundMusic && !backgroundMusic.paused) {
                 backgroundMusic.pause();
                 isMusicPaused = true;
             }
         } else {
-            // Tab is visible again, resume music if it was playing
             if (backgroundMusic && isMusicPaused) {
                 backgroundMusic.play().catch(e => {
                     console.log("Music playback prevented:", e);
@@ -1094,18 +1107,13 @@
 
     // Set up all event listeners
     function setupEventListeners() {
-        // Game modal
         closeModal.addEventListener('click', closeGameModal);
         gameModal.addEventListener('click', (e) => {
-            if (e.target === gameModal) {
-                closeGameModal();
-            }
+            if (e.target === gameModal) closeGameModal();
         });
 
-        // Mobile menu
         mobileMenu.addEventListener('click', toggleMobileMenu);
 
-        // Game search with input sanitization
         gameSearch.addEventListener('input', (e) => {
             const searchTerm = sanitizeInput(e.target.value.toLowerCase());
             const filteredGames = games.filter(game => 
@@ -1116,24 +1124,16 @@
             displayGames(filteredGames, allGamesGrid);
         });
 
-        // Keyboard shortcuts and navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeGameModal();
                 closeMusicPlayerModal();
             }
             
-            // Trap focus in modals when open
-            if (gameModal.style.display === 'block') {
-                trapFocusInModal(gameModal, e);
-            }
-            
-            if (musicPlayerContainer.style.display === 'block') {
-                trapFocusInModal(musicPlayerContainer, e);
-            }
+            if (gameModal.style.display === 'block') trapFocusInModal(gameModal, e);
+            if (musicPlayerContainer.style.display === 'block') trapFocusInModal(musicPlayerContainer, e);
         });
 
-        // Navigation links
         navLinksList.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1143,7 +1143,6 @@
             });
         });
 
-        // Footer links
         footerLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1152,13 +1151,11 @@
             });
         });
 
-        // Home link
         homeLink.addEventListener('click', (e) => {
             e.preventDefault();
             showPage('home');
         });
 
-        // Prevent arrow key scrolling in games
         document.addEventListener('keydown', (e) => {
             if (gameContainer.style.display === 'block' && 
                 ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
@@ -1166,21 +1163,13 @@
             }
         }, false);
 
-        // Music control
         musicControl.addEventListener('click', toggleMusicPlayer);
-        
-        // Music player controls
         closeMusicPlayer.addEventListener('click', closeMusicPlayerModal);
         musicPlayerOverlay.addEventListener('click', closeMusicPlayerModal);
 
-        // Music list items
         const musicItems = musicList.querySelectorAll('.music-item');
         musicItems.forEach(item => {
-            item.addEventListener('click', () => {
-                playBackgroundMusic(item);
-            });
-            
-            // Keyboard support for music items
+            item.addEventListener('click', () => playBackgroundMusic(item));
             item.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -1230,11 +1219,8 @@
             musicPlayerOverlay.style.pointerEvents = 'auto';
             musicPlayerContainer.style.pointerEvents = 'auto';
             
-            // Focus first interactive element for keyboard users
             const firstMusicItem = musicList.querySelector('.music-item');
-            if (firstMusicItem) {
-                firstMusicItem.focus();
-            }
+            if (firstMusicItem) firstMusicItem.focus();
         }, 10);
     }
 
@@ -1249,15 +1235,12 @@
         setTimeout(() => {
             musicPlayerOverlay.style.display = 'none';
             musicPlayerContainer.style.display = 'none';
-            
-            // Return focus to music control button
             musicControl.focus();
         }, 300);
     }
 
     // Play background music or disable it
     function playBackgroundMusic(musicItem) {
-        // Update ARIA attributes
         const musicItems = musicList.querySelectorAll('.music-item');
         musicItems.forEach(item => {
             item.setAttribute('aria-selected', 'false');
@@ -1265,7 +1248,6 @@
         });
         musicItem.setAttribute('aria-selected', 'true');
         
-        // If clicking "No Music" option
         if (musicItem.classList.contains('no-music')) {
             if (backgroundMusic) {
                 backgroundMusic.pause();
@@ -1275,8 +1257,6 @@
             
             musicItem.classList.add('active');
             currentMusicItem = musicItem;
-            
-            // Update now playing info
             currentSongTitle.textContent = "None";
             nowPlaying.classList.add('active');
             return;
@@ -1285,7 +1265,6 @@
         const src = musicItem.getAttribute('data-src');
         const title = musicItem.querySelector('.music-title').textContent;
         
-        // Stop current music if playing
         if (backgroundMusic) {
             backgroundMusic.pause();
             backgroundMusic.currentTime = 0;
@@ -1293,17 +1272,11 @@
         
         musicItem.classList.add('active');
         currentMusicItem = musicItem;
-        
-        // Play new music
         backgroundMusic = new Audio(src);
         backgroundMusic.loop = true;
         backgroundMusic.volume = 0.5;
         
-        backgroundMusic.play().catch(e => {
-            console.log("Music playback prevented:", e);
-        });
-        
-        // Update now playing info
+        backgroundMusic.play().catch(e => console.log("Music playback prevented:", e));
         currentSongTitle.textContent = title;
         nowPlaying.classList.add('active');
     }
@@ -1331,23 +1304,9 @@
         }
     }
 
-    // Play a sound effect
-    function playSound(src, volume = 1.0) {
-        const sound = new Audio(src);
-        sound.volume = volume;
-        sound.play().catch(e => console.log("Sound playback prevented:", e));
-        currentGameSounds.push(sound);
-        return sound;
-    }
-
     // Show a specific page
     function showPage(pageName) {
-        // Exit game if currently playing
-        if (gameContainer.style.display === 'block') {
-            exitGame();
-        }
-
-        // Clear search if active
+        if (gameContainer.style.display === 'block') exitGame();
         if (gameSearch.value) {
             gameSearch.value = '';
             displayGames(games, gamesGrid);
@@ -1364,9 +1323,7 @@
                 homePage.style.display = 'block';
                 homePage.classList.add('active');
                 featuredGamesSection.style.display = 'block';
-                setTimeout(() => {
-                    featuredGamesSection.style.opacity = 1;
-                }, 50);
+                setTimeout(() => featuredGamesSection.style.opacity = 1, 50);
                 break;
             case 'games':
                 gamesPage.style.display = 'block';
@@ -1424,7 +1381,6 @@
                 openGameModal(game.id);
             });
             
-            // Make game card keyboard accessible
             gameCard.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -1466,12 +1422,8 @@
             setTimeout(() => {
                 document.querySelector('.modal-content').style.transform = 'translateY(0)';
                 document.querySelector('.modal-content').style.opacity = 1;
-                
-                // Focus first interactive element for keyboard users
                 const playButton = modalBody.querySelector('.play-now');
-                if (playButton) {
-                    playButton.focus();
-                }
+                if (playButton) playButton.focus();
             }, 10);
             
             const modalPlayButton = modalBody.querySelector('.play-now');
@@ -1489,12 +1441,8 @@
         document.querySelector('.modal-content').style.opacity = 0;
         setTimeout(() => {
             gameModal.style.display = 'none';
-            
-            // Return focus to the element that opened the modal
             const focusedElementBeforeModal = document.activeElement;
-            if (focusedElementBeforeModal) {
-                focusedElementBeforeModal.focus();
-            }
+            if (focusedElementBeforeModal) focusedElementBeforeModal.focus();
         }, 300);
     }
 
@@ -1518,8 +1466,6 @@
         setTimeout(() => {
             gameContainer.style.opacity = 1;
             setupGame(game);
-            
-            // Focus game container for screen readers
             gameContainer.setAttribute('tabindex', '-1');
             gameContainer.focus();
         }, 50);
@@ -1529,7 +1475,6 @@
     function exitGame() {
         stopAllGameSounds();
         
-        // Save game progress if applicable
         if (currentGame && currentGame.saveProgress) {
             saveGameProgress(currentGame.id);
         }
@@ -1547,12 +1492,9 @@
         if (!game || !game.saveProgress) return;
         
         try {
-            // In a real implementation, you would get the actual progress from the game
             const progress = {
                 lastPlayed: new Date().toISOString(),
-                // Add other progress data here
             };
-            
             localStorage.setItem(game.progressKey, JSON.stringify(progress));
         } catch (e) {
             console.error("Failed to save game progress:", e);
@@ -1584,32 +1526,28 @@
         
         setTimeout(() => {
             const content = document.getElementById('gameContent');
-            
-            if (game.gameType === 'iframe') {
-                setupIframeGame(game);
-            }
-            
+            if (game.gameType === 'iframe') setupIframeGame(game);
             content.style.opacity = 1;
             document.getElementById('gameLoader').remove();
             gameContainer.scrollTo(0, 0);
         }, 500);
     }
 
-    // Set up iframe game with restrictive sandbox
+    // Set up iframe game with aspect ratio control
     function setupIframeGame(game) {
-        // Load saved progress if available
         const progress = loadGameProgress(game.id);
         let gameUrl = game.gameUrl;
         
         if (progress && game.saveProgress) {
-            // Add progress data to URL if the game supports it
             gameUrl += (gameUrl.includes('?') ? '&' : '?') + `progress=${encodeURIComponent(JSON.stringify(progress))}`;
         }
+        
+        const use4by3 = game.aspectRatio === "4by3";
         
         gameContainer.innerHTML = `
             <div class="game-screen">
                 <h2 class="game-title-display" tabindex="0">${sanitizeInput(game.title)}</h2>
-                <div class="iframe-container">
+                <div class="iframe-container ${use4by3 ? 'ratio-4by3' : ''}">
                     <iframe src="${sanitizeInput(gameUrl)}" 
                             class="game-iframe" 
                             allowfullscreen
@@ -1627,11 +1565,8 @@
         `;
         
         currentGameIframe = document.getElementById('gameIframe');
-        
         const backButton = document.getElementById('backToGames');
-        backButton.addEventListener('click', () => {
-            showPage('games');
-        });
+        backButton.addEventListener('click', () => showPage('games'));
         
         const restartButton = document.getElementById('restartGame');
         if (restartButton) {
@@ -1641,11 +1576,8 @@
         }
 
         const titleElement = document.querySelector('.game-title-display');
-        titleElement.addEventListener('click', () => {
-            titleElement.classList.toggle('glow');
-        });
+        titleElement.addEventListener('click', () => titleElement.classList.toggle('glow'));
         
-        // Keyboard support for game controls
         backButton.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -1662,7 +1594,6 @@
             });
         }
         
-        // Focus first control for keyboard users
         backButton.focus();
     }
 </script>
